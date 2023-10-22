@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Very  simple editor</string>
+    <string name="need_external_fm">Need external file manager</string>
+    <string name="ErrorOverFileSize">File is large</string>
+    <string name="open">Open</string>
+    <string name="save">Save as</string>
+</resources>
