@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.speech.RecognizerIntent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,6 +29,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -66,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.save_file){
             saveDocument();
         }
+
+       if (item.getItemId() == R.id.speechrequest) { // -------------------------------------
+           displaySpeechRecognizer();
+       }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -175,5 +182,33 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private final ActivityResultLauncher<Intent>  speechActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    try{
+                        Intent data = result.getData();
+                        List<String> results = Objects.requireNonNull(data).getStringArrayListExtra(
+                                RecognizerIntent.EXTRA_RESULTS);
+
+                        String spokenText = Objects.requireNonNull(results).get(0);
+                        inputArea.getText().insert(inputArea.getSelectionStart(), spokenText+" ");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+    private void displaySpeechRecognizer() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        try {
+            speechActivityResultLauncher.launch(intent);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, getString(R.string.need_speach_engine), Toast.LENGTH_LONG).show();
+        }
     }
 }

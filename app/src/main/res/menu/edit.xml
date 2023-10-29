@@ -11,4 +11,11 @@
         android:title="@string/save"
         app:showAsAction="never">
     </item>
+
+    <item
+        android:id="@+id/speechrequest"
+        android:icon="@drawable/speak_request"
+        android:title="@string/speech_input"
+        app:showAsAction="ifRoom">
+    </item>
 </menu>

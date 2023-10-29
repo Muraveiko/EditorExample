@@ -4,4 +4,6 @@
     <string name="ErrorOverFileSize">File is large</string>
     <string name="open">Open</string>
     <string name="save">Save as</string>
+    <string name="speech_input">Speech input</string>
+    <string name="need_speach_engine">Need speach engine</string>
 </resources>
